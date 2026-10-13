@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.DS_Store
+.obsidian/
+.env
+.env.*
+.claude/settings.local.json
+.codex/hooks.json
+notes/*/records/*.md
