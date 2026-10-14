@@ -6,7 +6,7 @@
 
 まず [導入手順](docs/setup.md) を開き、[自分の目的に合わせるプロンプト](docs/prompts.md) で用途を決めてください。
 
-## できること
+## 主な機能
 
 - 短い基本指示、Claude Codeの条件別ルール、両ツール用の記録・文脈検索スキルを使う。
 - `notes/school`、`notes/work`、`notes/personal` に目的・索引・引継ぎ・要約を残す。
@@ -40,7 +40,7 @@ python3 scripts/no.py search "対象読者" --domain personal
 | `.claude/skills/` / `.agents/skills/` | 各ツールのno-context / no-record |
 | `docs/rules/` | 必要なときに読む共通の説明 |
 | `notes/` | Obsidianで開く記録 |
-| `scripts/` | Python標準ライブラリだけのCLIと任意フック |
+| `scripts/` | Python標準ライブラリだけで動くCLI（文字のコマンドで操作するプログラム）と任意フック |
 | `docs/hooks/` | ツール・OS別の任意設定例（既定では無効） |
 | `tests/` | 一時フォルダーで動く検証 |
 
@@ -54,6 +54,6 @@ CLIの書き込み先はこのキット内です。ノート雛形と記録以�
 
 `doctor` はローカルのファイルとJSONだけを検査し、ログインやAIの読み込みまでは確かめません。AIの会話で読み込まれたかは [確認手順](docs/prompts.md) で確かめてください。2026-10-14に、MacのClaude Code（基本指示・条件別ルール・二つのスキル・開始時フック）とCodex（基本指示・二つのスキル）で、実際の会話に読み込まれることを確認しています。
 
-追加サービス、APIキー、ネットワーク接続はCLIに不要です。AIの利用料金とアカウントは別途必要です。MITライセンスで配布します。条件は [LICENSE](LICENSE) を確認してください。
+追加のサービス、API（外部サービスを呼び出すための窓口）のキー、ネットワーク接続は、CLIには要りません。AIの利用料金とアカウントは別途必要です。MITライセンスで配布します。条件は [LICENSE](LICENSE) を確認してください。
 
 検証を再実行する場合は `python3 -B -m unittest discover -s tests -v` を使います。公開前の検査は `python3 -B scripts/check_distribution.py` です。内容の確認も配布者が行ってください。
