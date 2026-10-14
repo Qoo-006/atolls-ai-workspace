@@ -2,7 +2,7 @@
 
 学校・仕事・個人の作業を分け、必要な記録を選んでAIへ渡すためのサンプルです。NOは全体の窓口の名前です。CodexかClaude Codeのどちらか一方から始められます。
 
-配布予定先: [GitHubのサンプル](https://github.com/Qoo-006/atolls-ai-workspace)。公開前はリンクから取得できない場合があります。
+配布先: [GitHubのサンプル](https://github.com/Qoo-006/atolls-ai-workspace)。
 
 まず [導入手順](docs/setup.md) を開き、[自分の目的に合わせるプロンプト](docs/prompts.md) で用途を決めてください。
 
@@ -54,6 +54,6 @@ CLIの書き込み先はこのキット内です。ノート雛形と記録以�
 
 `doctor` はログインやAIの読み込み成功を保証しません。初回認証、Windows実機、ZedとObsidianの画面操作、AIセッション内でのスキル・フック読み込みは未検証です。[確認手順](docs/prompts.md) を用意しています。
 
-追加サービス、APIキー、ネットワーク接続はCLIに不要です。AIの利用料金とアカウントは別途必要です。利用許諾条件は配布者が決めるため、このサンプルにはLICENSEを付けていません。
+追加サービス、APIキー、ネットワーク接続はCLIに不要です。AIの利用料金とアカウントは別途必要です。MITライセンスで配布します。条件は [LICENSE](LICENSE) を確認してください。
 
 検証を再実行する場合は `python3 -B -m unittest discover -s tests -v` を使います。公開前の検査は `python3 -B scripts/check_distribution.py` です。内容の確認も配布者が行ってください。
