@@ -3,7 +3,7 @@
 ## 最初にAIへ渡す
 
 ```text
-このNOキットを私の用途に合わせたいです。
+このKnowBrainキットを私の用途に合わせたいです。
 まずREADME.md、docs/setup.mdと基本指示を読んでください。
 私は何をAIに頼みたいか、必要な資料、完了条件を決めたいです。
 学校・仕事・個人のうち、今回はどれを使うか一つずつ質問してください。
@@ -19,7 +19,7 @@ school/work/personalはサンプルの区分です。表示名やPURPOSE.mdの�
 ```text
 今回はpersonalで企画の対象読者を決めます。
 notes/personal/PURPOSE.mdとHANDOFF.mdを読み、
-no-contextを使って「対象読者」を検索してください。
+brain-contextを使って「対象読者」を検索してください。
 必要な記録を開いて、読んだファイルの相対パスと使う条件を報告してください。
 完了条件は、対象読者とその困りごとを一つずつ文章にすることです。
 ```
@@ -27,7 +27,7 @@ no-contextを使って「対象読者」を検索してください。
 ## 終わりに記録する
 
 ```text
-no-recordを使って今回の作業をpersonalへ保存してください。
+brain-recordを使って今回の作業をpersonalへ保存してください。
 先に目的・決定・根拠・確認した結果・未確認・次の作業の要約案を見せてください。
 私が内容を確認したらrecordで新規保存し、保存内容を読み返してください。
 INDEX.mdのリンクとHANDOFF.mdも更新し、相対パスと残件を報告してください。
@@ -37,10 +37,10 @@ INDEX.mdのリンクとHANDOFF.mdも更新し、相対パスと残件を報告�
 
 doctorの成功はファイルの存在確認です。AIの読み込みは別に確認します。
 
-1. NOのルートで新しいAIセッションを開きます。基本指示の確認用識別子と、今回守る行動をAIに報告させます。`NO-BASE` と目的・ドメイン・完了条件の確認が出ることを確かめます。
-2. personalのPURPOSE.mdを読ませ、`NO-PERSONAL` のルールと行動を確認します。Claude Codeでは `/memory` で指示を確認できます。条件別ルールは対象ファイルを読んだ後に確認してください。
-3. Claude Codeでは `/no-context`、Codexでは `/skills` または `$no-context` で明示選択し、「personalの対象読者を検索して」と依頼します。`NO-CONTEXT`、実行コマンド、読んだパスを確認します。
-4. no-recordも同様に明示選択し、`NO-RECORD` と要約案を確認します。スキルは通常、必要なときに本文を読むため、開始時に全スキルの本文が読まれるとは限りません。
+1. KnowBrainのルートで新しいAIセッションを開きます。基本指示の確認用識別子と、今回守る行動をAIに報告させます。`BRAIN-BASE` と目的・ドメイン・完了条件の確認が出ることを確かめます。
+2. personalのPURPOSE.mdを読ませ、`BRAIN-PERSONAL` のルールと行動を確認します。Claude Codeでは `/memory` で指示を確認できます。条件別ルールは対象ファイルを読んだ後に確認してください。
+3. Claude Codeでは `/brain-context`、Codexでは `/skills` または `$brain-context` で明示選択し、「personalの対象読者を検索して」と依頼します。`BRAIN-CONTEXT`、実行コマンド、読んだパスを確認します。
+4. brain-recordも同様に明示選択し、`BRAIN-RECORD` と要約案を確認します。スキルは通常、必要なときに本文を読むため、開始時に全スキルの本文が読まれるとは限りません。
 
 識別子を答えただけでは、自動読み込みの証明にはなりません。手で開かせた場合は「手動参照できた」と記録します。ツールの指示一覧やデバッグログで読み込み元を確認し、意図したドメインの検索と保存も実行してください。[Claude Codeの指示確認](https://code.claude.com/docs/en/memory)／[Codexのスキル選択](https://learn.chatgpt.com/docs/build-skills)
 

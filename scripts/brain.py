@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""NO: local Markdown setup, literal search, and manual summary recording."""
+"""KnowBrain: local Markdown setup, literal search, and manual summary recording."""
 import argparse
 import datetime
 import json
@@ -96,7 +96,7 @@ def record(args):
         raise ValueError("先にsetupを実行してください")
     stamp = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
     with destination.open("x", encoding="utf-8", newline="\n") as out:
-        out.write(f"<!-- NO manual summary | {args.domain} | {stamp} -->\n\n")
+        out.write(f"<!-- KnowBrain manual summary | {args.domain} | {stamp} -->\n\n")
         out.write(content.rstrip() + "\n")
     print(destination.relative_to(ROOT).as_posix())
 
@@ -147,7 +147,7 @@ def doctor():
     for domain in DOMAINS:
         required += [f"docs/rules/{domain}.md", f".claude/rules/{domain}.md"]
     for host in (".agents", ".claude"):
-        for skill in ("no-record", "no-context"):
+        for skill in ("brain-record", "brain-context"):
             required.append(f"{host}/skills/{skill}/SKILL.md")
     for name in required:
         try:
@@ -193,7 +193,7 @@ def positive(value):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="NO: ローカルの要約を保存・検索する")
+    parser = argparse.ArgumentParser(description="KnowBrain: ローカルの要約を保存・検索する")
     subs = parser.add_subparsers(dest="command", required=True)
     subs.add_parser("setup", help="不足するノート雛形だけを作成する")
     subs.add_parser("doctor", help="ローカル構成とJSONを検査する")

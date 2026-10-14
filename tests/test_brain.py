@@ -13,7 +13,7 @@ SOURCE = Path(__file__).resolve().parent.parent
 
 class KitTest(unittest.TestCase):
     def setUp(self):
-        self.temp = tempfile.TemporaryDirectory(prefix="no-test-")
+        self.temp = tempfile.TemporaryDirectory(prefix="brain-test-")
         self.base = Path(self.temp.name)
         self.root = self.base / "空白 日本語 kit"
         shutil.copytree(SOURCE, self.root, ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
@@ -25,7 +25,7 @@ class KitTest(unittest.TestCase):
 
     def run_cli(self, *args, expected=0, data=None, cwd=None):
         result = subprocess.run(
-            [sys.executable, "-B", str(self.root / "scripts/no.py"), *args],
+            [sys.executable, "-B", str(self.root / "scripts/brain.py"), *args],
             input=data, capture_output=True, encoding="utf-8", cwd=cwd or self.root,
         )
         self.assertEqual(result.returncode, expected, result.stderr + result.stdout)
@@ -126,7 +126,7 @@ class KitTest(unittest.TestCase):
         output = json.loads(result.stdout)
         self.assertEqual(set(output), {"hookSpecificOutput"})
         self.assertEqual(output["hookSpecificOutput"]["hookEventName"], "SessionStart")
-        self.assertIn("NO-START", output["hookSpecificOutput"]["additionalContext"])
+        self.assertIn("BRAIN-START", output["hookSpecificOutput"]["additionalContext"])
         (self.root / ".zed/settings.json").write_text("{", encoding="utf-8")
         self.run_cli("doctor", expected=1)
 
@@ -141,10 +141,10 @@ class KitTest(unittest.TestCase):
             else:
                 result = subprocess.run(handler["command"], shell=True, capture_output=True, text=True, cwd=self.root, env=env)
             self.assertEqual(result.returncode, 0, result.stderr)
-            self.assertIn("NO-START", json.loads(result.stdout)["hookSpecificOutput"]["additionalContext"])
+            self.assertIn("BRAIN-START", json.loads(result.stdout)["hookSpecificOutput"]["additionalContext"])
 
     def test_skills_and_conditional_rules(self):
-        for skill in ("no-context", "no-record"):
+        for skill in ("brain-context", "brain-record"):
             first = (self.root / f".agents/skills/{skill}/SKILL.md").read_text()
             self.assertEqual(first, (self.root / f".claude/skills/{skill}/SKILL.md").read_text())
             self.assertIn(f"name: {skill}", first)

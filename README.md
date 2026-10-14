@@ -1,10 +1,39 @@
-# NO スターターキット
+# KnowBrain スターターキット
 
-学校・仕事・個人の作業を分け、必要な記録を選んでAIへ渡すためのサンプルです。NOは全体の窓口の名前です。CodexかClaude Codeのどちらか一方から始められます。
+学校・仕事・個人の作業を分け、必要な記録を選んでAIへ渡すためのサンプルです。KnowBrainは、活動ごとの指示と記録をまとめる「脳」として使う作業フォルダーです。名前は、脳（のう）とKnow（知る）とBrainを掛けています。CodexかClaude Codeのどちらか一方から始められます。
 
 配布先: [GitHubのサンプル](https://github.com/Qoo-006/atolls-ai-workspace)。
 
-まず [導入手順](docs/setup.md) を開き、[自分の目的に合わせるプロンプト](docs/prompts.md) で用途を決めてください。
+取り込みはAIに任せられます。下の「AIに取り込んでもらう」から始め、[自分の目的に合わせるプロンプト](docs/prompts.md) で用途を決めてください。手順の詳細は [導入手順](docs/setup.md) にあります。
+
+## AIに取り込んでもらう
+
+CodexかClaude Codeを導入済みなら、取り込み先にしたいフォルダーのターミナルで起動し、次の依頼文を渡します。
+
+```text
+次のGitHubのスターターキットを、自分用のAI作業環境として取り込みたいです。
+https://github.com/Qoo-006/atolls-ai-workspace
+
+今いるフォルダーの中に、KnowBrainという新しいフォルダーを作って取り込んでください。
+同じ名前のフォルダーがあれば、上書きせずに止めて私に確認してください。
+GitやPython 3.11以上が足りなければ、自分のOSでの入れ方を説明してください。
+
+取り込んだらREADME.mdとdocs/setup.mdを読み、scripts/brain.pyのsetupとdoctorまで進めてください。
+コマンドを実行する前に、何をするのかを説明してください。
+フックの有効化、ホームフォルダーや既存の設定の変更はしないでください。
+最後に、作られたファイルとdoctorの結果を報告してください。
+```
+
+AIがコマンドの実行を確認してきたら、内容を読んでから許可します。手で取り込む場合は、既存のプロジェクトと重ならない場所で次を実行します。Macの例です。Windowsは `python3` を `py -3` に置き換えます。
+
+```sh
+git clone https://github.com/Qoo-006/atolls-ai-workspace.git KnowBrain
+cd KnowBrain
+python3 scripts/brain.py setup
+python3 scripts/brain.py doctor
+```
+
+取り込みが終わったら、その会話は閉じます。KnowBrainのフォルダーで新しくCodexかClaude Codeを起動すると、このキットの基本指示とスキルが読み込まれます。
 
 ## 主な機能
 
@@ -20,10 +49,10 @@
 ターミナルでキットのルートに移動して実行します。Macの例です。Windowsは `python3` を `py -3` に置き換えます。
 
 ```sh
-python3 scripts/no.py setup
-python3 scripts/no.py doctor
-python3 scripts/no.py record --domain personal --name first-note --text "今日は企画の目的を決めた。次は対象読者を確認する。"
-python3 scripts/no.py search "対象読者" --domain personal
+python3 scripts/brain.py setup
+python3 scripts/brain.py doctor
+python3 scripts/brain.py record --domain personal --name first-note --text "今日は企画の目的を決めた。次は対象読者を確認する。"
+python3 scripts/brain.py search "対象読者" --domain personal
 ```
 
 `notes/personal/records/first-note.md` が見つかったら、そのファイルを開いて内容を確認します。同じ名前では上書きしません。繰り返す場合は別の名前を使ってください。
@@ -37,7 +66,7 @@ python3 scripts/no.py search "対象読者" --domain personal
 | `AGENTS.md` / `CLAUDE.md` | Codex / Claude Codeの基本指示 |
 | `.zed/settings.json` | 編集用のプロジェクト設定 |
 | `.claude/rules/` | 対象パスに応じたClaude Codeのルール |
-| `.claude/skills/` / `.agents/skills/` | 各ツールのno-context / no-record |
+| `.claude/skills/` / `.agents/skills/` | 各ツールのbrain-context / brain-record |
 | `docs/rules/` | 必要なときに読む共通の説明 |
 | `notes/` | Obsidianで開く記録 |
 | `scripts/` | Python標準ライブラリだけで動くCLI（文字のコマンドで操作するプログラム）と任意フック |
