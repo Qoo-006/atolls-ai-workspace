@@ -38,11 +38,39 @@ python3 scripts/brain.py doctor
 ## 主な機能
 
 - 短い基本指示、Claude Codeの条件別ルール、両ツール用の記録・文脈検索スキルを使う。
-- `notes/school`、`notes/work`、`notes/personal` に目的・索引・引継ぎ・要約を残す。
+- 既定の `school`・`work`・`personal` に加え、`domain add` で自分の活動のドメインを足し、それぞれに目的・索引・引継ぎ・要約を残す。
 - Pythonの `setup` で不足する雛形を作り、`record` で確認した要約を新規保存する。
 - `search` で指定ドメイン内のMarkdownを文字列検索し、相対パスと行番号を得る。
 - `doctor` でローカルの構成とサンプルJSONを検査する。
 - Obsidianで同じノートを読み返す。任意で開始時の案内フックを設定する。
+
+## 自分のドメインを決める
+
+ドメインは、AIに頼む活動の区分です。既定では学校（school）・仕事（work）・個人（personal）を用意しています。就活や部活のように別に分けたい活動があれば、自分で足せます。
+
+まずAIに次のように頼み、自分の活動に合う分け方を一緒に決めます。
+
+```text
+このKnowBrainで使うドメイン（活動の区分）を、自分の使い方に合わせて決めたいです。
+README.mdとnotes/INDEX.mdを読んでから、私がAIに頼みたい活動を一問ずつ聞いてください。
+
+答えが揃ったら、ドメインの分け方を提案してください。
+既定のschool・work・personalで足りる活動は、そのまま使ってください。
+足りない活動だけ、フォルダー名（英小文字）と日本語の表示名の案を出してください。
+例: job-hunt（就活）、club（部活）
+
+私が確認してから、scripts/brain.py domain add <名前> --label <表示名> で作ってください。
+使わない既定のドメインは消さずに残してください。
+作ったら、PURPOSE.mdとdocs/rules/<名前>.mdに書く内容を一問ずつ一緒に決めてください。
+```
+
+手で足す場合は、キットのルートで次を実行します（Windowsは `python3` を `py -3` に置き換えます）。
+
+```sh
+python3 scripts/brain.py domain add job-hunt --label 就活
+```
+
+`notes/job-hunt/` の目的・索引・引継ぎと `records/`、`docs/rules/job-hunt.md`、Claude Code用の `.claude/rules/job-hunt.md` を作り、`notes/INDEX.md` にリンクを1行足します。名前は英小文字で始まる英小文字・数字・`-` の1〜32文字です。既存のファイルがあれば何も作らずに止まります。使わない既定のドメインは、消さずに残しておいて構いません。
 
 ## まず一度試す
 

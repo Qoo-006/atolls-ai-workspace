@@ -2,7 +2,7 @@
 
 確認用識別子: BRAIN-BASE
 
-1. 依頼の目的、school/work/personalのどれで作業するか、完了条件を確認する。
+1. 依頼の目的、どのドメインで作業するか（一覧は `notes/INDEX.md`）、完了条件を確認する。合うドメインがなければ、本人と確認してから `scripts/brain.py domain add` で足す。
 2. 選んだドメインの `notes/<domain>/PURPOSE.md` と `HANDOFF.md` を読む。
 3. ドメインのルールは `.claude/rules/` の対象パスに応じて読む。共通説明は `docs/rules/<domain>.md` にある。
 4. 過去の決定が必要なら brain-context スキルでドメインを限定して検索し、必要な記録だけ読む。

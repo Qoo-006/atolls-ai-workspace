@@ -154,6 +154,78 @@ class KitTest(unittest.TestCase):
             self.assertTrue(content.startswith('---\npaths:\n'))
             self.assertIn(f'"notes/{domain}/**/*.md"', content)
 
+    def test_domain_add_creates_notes_rules_and_index_link(self):
+        index_before = (self.root / "notes/INDEX.md").read_text(encoding="utf-8")
+        self.run_cli("domain", "add", "job-hunt", "--label", "就活")
+        for name in ("PURPOSE.md", "INDEX.md", "HANDOFF.md"):
+            self.assertTrue((self.root / f"notes/job-hunt/{name}").is_file(), name)
+        self.assertTrue((self.root / "notes/job-hunt/records").is_dir())
+        self.assertTrue((self.root / "notes/job-hunt/PURPOSE.md").read_text(encoding="utf-8").startswith("# 就活 の目的\n"))
+        rule = (self.root / ".claude/rules/job-hunt.md").read_text(encoding="utf-8")
+        self.assertTrue(rule.startswith('---\npaths:\n'))
+        self.assertIn('"notes/job-hunt/**/*.md"', rule)
+        self.assertIn("BRAIN-JOB-HUNT", rule)
+        self.assertIn("BRAIN-JOB-HUNT", (self.root / "docs/rules/job-hunt.md").read_text(encoding="utf-8"))
+        index = (self.root / "notes/INDEX.md").read_text(encoding="utf-8")
+        self.assertTrue(index.startswith(index_before))
+        self.assertTrue(index.endswith("- [就活](job-hunt/INDEX.md)\n"))
+        self.assertIn("doctor: OK", self.run_cli("doctor").stdout)
+        self.assertIn("0 files created", self.run_cli("setup").stdout)
+
+    def test_domain_add_never_overwrites_and_checks_before_creating(self):
+        existing = self.root / "docs/rules/club.md"
+        existing.write_text("自分で書いたルール\n", encoding="utf-8")
+        index_before = (self.root / "notes/INDEX.md").read_bytes()
+        self.run_cli("domain", "add", "club", expected=1)
+        self.assertEqual(existing.read_text(encoding="utf-8"), "自分で書いたルール\n")
+        self.assertFalse((self.root / "notes/club").exists())
+        self.assertFalse((self.root / ".claude/rules/club.md").exists())
+        self.assertEqual(index_before, (self.root / "notes/INDEX.md").read_bytes())
+        existing.unlink()
+        self.run_cli("domain", "add", "club", "--label", "部活")
+        purpose = self.root / "notes/club/PURPOSE.md"
+        purpose.write_text("# 部活 の目的\n自分の目的\n", encoding="utf-8")
+        before = {p.relative_to(self.root): p.read_bytes() for p in self.root.rglob("*") if p.is_file()}
+        for name in ("club", "school"):
+            self.run_cli("domain", "add", name, expected=1)
+        (self.root / "notes/empty").mkdir()
+        self.run_cli("domain", "add", "empty", expected=1)
+        after = {p.relative_to(self.root): p.read_bytes() for p in self.root.rglob("*") if p.is_file()}
+        self.assertEqual(before, after)
+
+    def test_domain_add_rejects_invalid_names_and_labels(self):
+        before = sorted(p.relative_to(self.root) for p in self.root.rglob("*"))
+        for name in ("Club", "1club", "club_a", "クラブ", "a" * 33, "con", "com1", "../x", "club/a", ""):
+            self.run_cli("domain", "add", name, expected=1)
+        for label in ("改行\nあり", "[リンク]", "a" * 41, " "):
+            self.run_cli("domain", "add", "club", "--label", label, expected=1)
+        self.assertEqual(before, sorted(p.relative_to(self.root) for p in self.root.rglob("*")))
+
+    def test_added_domain_record_search_without_leaking(self):
+        self.run_cli("domain", "add", "club", "--label", "部活")
+        self.run_cli("record", "--domain", "club", "--name", "practice", "--text", "needle club")
+        self.run_cli("record", "--domain", "school", "--name", "lesson", "--text", "needle school")
+        club = self.run_cli("search", "needle", "--domain", "club").stdout
+        self.assertIn("notes/club/records/practice.md", club)
+        self.assertNotIn("needle school", club)
+        self.assertNotIn("needle club", self.run_cli("search", "needle", "--domain", "school").stdout)
+        self.run_cli("record", "--domain", "ghost", "--name", "x", "--text", "data", expected=1)
+        self.run_cli("search", "needle", "--domain", "ghost", expected=1)
+        self.assertFalse((self.root / "notes/ghost").exists())
+
+    def test_doctor_checks_added_domains_and_ignores_other_folders(self):
+        self.run_cli("domain", "add", "club", "--label", "部活")
+        odd = self.root / "notes/Bad_Name"
+        odd.mkdir()
+        (odd / "PURPOSE.md").write_text("needle odd", encoding="utf-8")
+        self.run_cli("search", "needle", "--domain", "Bad_Name", expected=1)
+        self.assertIn("doctor: OK", self.run_cli("doctor").stdout)
+        (self.root / "docs/rules/club.md").unlink()
+        self.assertIn("missing: docs/rules/club.md", self.run_cli("doctor", expected=1).stdout)
+        (self.root / "notes/club/HANDOFF.md").unlink()
+        self.assertIn("1 files created", self.run_cli("setup").stdout)
+        self.assertTrue((self.root / "notes/club/HANDOFF.md").read_text(encoding="utf-8").startswith("# 部活 の引継ぎ"))
+
     def test_distribution_scanner_detects_injected_secret(self):
         spec = importlib.util.spec_from_file_location("scanner", SOURCE / "scripts/check_distribution.py")
         module = importlib.util.module_from_spec(spec)

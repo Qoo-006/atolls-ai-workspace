@@ -2,7 +2,7 @@
 
 ## 1. 道具と置き場を用意する
 
-Python 3.11以上、ターミナルを開ける編集アプリ（Zed、VS Code、Cursorなど）、Obsidian、CodexかClaude Codeを用意します。AIの導入と初回ログインは無料編または公式案内で進めてください。このキットはインストールや認証を代行しません。
+Python 3.11以上、ターミナルを開ける編集アプリ（Zed、VS Code、Cursor、Antigravityなど）、Obsidian、CodexかClaude Codeを用意します。AIの導入と初回ログインは無料編または公式案内で進めてください。このキットはインストールや認証を代行しません。
 
 - [Python公式ダウンロード](https://www.python.org/downloads/)
 - [Codex CLI公式](https://learn.chatgpt.com/docs/codex/cli)
@@ -44,13 +44,33 @@ py -3 scripts/brain.py doctor
 
 設定を新規作成するHOME向けコマンドはありません。親フォルダーの指示や個人設定が適用される場合があるので、読み込み確認で競合も確かめます。Codexがローカルスキルを認識しない場合は、新しいKnowBrainのコピーを自分の独立したGitリポジトリとして `git init` したうえで再起動して確認できます。この操作は自動では行いません。公開用配布物に `.git` は入れません。
 
-## 3. Obsidianで同じ記録を開く
+## 3. 自分のドメインを決める
 
-Obsidianの保管庫選択から「フォルダーを保管庫として開く」を選び、KnowBrainの中の `notes` を指定します。`school`、`work`、`personal` と `INDEX.md` が見えることを確認してください。新しい空の保管庫を別の場所に作ると、CLIが保存した記録はそこに表示されません。[Obsidian公式の保管庫案内](https://help.obsidian.md/vault)
+ドメインは、AIに頼む活動の区分です。既定のschool・work・personalで足りない活動（就活、部活など）は自分で足せます。AIに一問ずつ聞いてもらい、分け方を確認してから作るのがおすすめです。依頼文は [目的の調整](prompts.md) の「自分のドメインを決める」にあります。
+
+手で足す場合:
+
+Mac:
+
+```sh
+python3 scripts/brain.py domain add job-hunt --label 就活
+```
+
+Windows（PowerShell）:
+
+```powershell
+py -3 scripts/brain.py domain add job-hunt --label 就活
+```
+
+`notes/job-hunt/` の目的・索引・引継ぎと `records/`、`docs/rules/job-hunt.md`、`.claude/rules/job-hunt.md` が作られ、`notes/INDEX.md` にリンクが1行足されます。既存のファイルがあれば何も作りません。作ったらPURPOSE.mdとルールを自分の用途に書き換え、`doctor` で確認します。使わない既定のドメインは消さずに残して構いません。
+
+## 4. Obsidianで同じ記録を開く
+
+Obsidianの保管庫選択から「フォルダーを保管庫として開く」を選び、KnowBrainの中の `notes` を指定します。`school`、`work`、`personal`（自分で足したドメインがあればそのフォルダーも）と `INDEX.md` が見えることを確認してください。新しい空の保管庫を別の場所に作ると、CLIが保存した記録はそこに表示されません。[Obsidian公式の保管庫案内](https://help.obsidian.md/vault)
 
 保管庫のルートは `notes`、AIの作業場のルートはKnowBrainです。CLIの表示する `notes/personal/records/first-note.md` は、Obsidianでは `personal/records/first-note.md` として開きます。外部プラグインや同期サービスの設定は不要です。Obsidian自身が作る `.obsidian` は配布対象にしません。
 
-## 4. 要約を保存して次回へ渡す
+## 5. 要約を保存して次回へ渡す
 
 AIにbrain-recordを使うよう依頼し、要約案を確認してから保存します。手で試す場合:
 
