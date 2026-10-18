@@ -1,0 +1,4 @@
+# 調べもの用（読むだけ）のプロファイル
+# ホームフォルダーの .codex/readonly.config.toml に置いて、codex --profile readonly で起動する
+sandbox_mode = "read-only"
+approval_policy = "on-request"

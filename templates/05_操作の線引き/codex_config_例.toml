@@ -1,0 +1,8 @@
+# Codex の設定例（ホームフォルダーの .codex/config.toml に足す）
+# 作業フォルダーの中の編集とコマンドは自動で進め、外に出るときは確認を求める
+sandbox_mode = "workspace-write"
+approval_policy = "on-request"
+
+[sandbox_workspace_write]
+# 既定でも閉じているけど、閉じていることを読んで分かるように書いておく
+network_access = false
